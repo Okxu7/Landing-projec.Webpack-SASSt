@@ -1,0 +1,1264 @@
+// === ПЕРЕМЕННЫЕ (Variables) ===
+// Цвета из макета (темный фон, розовые акценты)
+$bg-color-dark: #000000; 
+$text-color-light: #ffffff;
+$accent-pink: #c86b85;
+$accent-pink-hover: #a8546b;
+$card-bg: #ffffff;
+$text-dark: #333333;
+
+
+
+// Шрифты
+$font-main: 'Helvetica Neue', Arial, sans-serif;
+$font-heading: 'Georgia', serif;
+
+// === МИКСИНЫ (Mixins) ===
+// Миксин для центрирования элементов через Flexbox
+@mixin flex-center($dir: row, $justify: center, $align: center) {
+  display: flex;
+  flex-direction: $dir;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+// Миксин для базовой кнопки
+@mixin button-base {
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-family: $font-main;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+// === БАЗОВЫЕ СТИЛИ ===
+body {
+  background-color: $bg-color-dark;
+  color: $text-color-light;
+  font-family: $font-main;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+
+}
+
+// === КНОПКИ ===
+.btn-primary {
+  @include button-base;
+  background-color: $accent-pink;
+  color: $text-color-light;
+
+  &:hover {
+    background-color: $accent-pink-hover;
+  }
+}
+
+.btn-outline {
+  @include button-base;
+  background-color: transparent;
+  color: $accent-pink;
+  border: 2px solid $accent-pink;
+
+  &:hover {
+    background-color: $accent-pink;
+    color: $text-color-light;
+  }
+}
+
+// === ВЛОЖЕННОСТЬ (Nesting) В БЛОКАХ ===
+
+// Шапка
+.header {
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+  .container {
+    @include flex-center(row, space-between, center);
+  }
+
+  .nav {
+    a {
+      color: $text-color-light;
+      text-decoration: none;
+      margin-left: 20px;
+      transition: color 0.3s;
+
+      &:hover {
+        color: $accent-pink;
+      }
+    }
+  }
+}
+
+// --------------------------- Главный экран------------------------------------------------
+
+.hero {
+  padding: 80px 0;
+  height: 800px;
+
+  .hero-content {
+    @include flex-center(row, space-between, center);
+  }
+
+//   .hero-text {
+//     max-width: 70%;
+
+    h1 {
+      font-family: $font-heading;
+      font-size: 3rem;
+      color: $accent-pink;
+      margin-bottom: 20px;
+    }
+span{
+ font-family: $font-main;
+      font-size: 6rem;
+      color: $text-color-light;
+      margin-left: 100px;
+    
+}
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 230px;
+    }
+  }
+ 
+
+.hero-content {
+  position: relative; // Головний контейнер для позиціонування
+  display: flex;
+  align-items: center;
+  min-height: 500px;
+} 
+
+// === ШАР 1 та 2: КОЛО І КАРТИНКА ===
+
+
+// Контейнер для картинок
+.hero-graphics {
+  position: absolute; 
+  right: 0; 
+  top: 70%;
+  transform: translateY(-50%); 
+  width: 50%; 
+  display: flex;
+  justify-content: center; // Центруємо картинки всередині контейнера
+  align-items: center;
+  
+  // Стилі для картинки-кола
+  .circle-img {
+    position: absolute; // Відриваємо від потоку, щоб накласти
+    top: 60%;
+    left: 30%;
+    transform: translate(-50%, -50%); // Точне центрування
+    width: 90%; // Налаштуйте розмір відносно контейнера (або задайте точні пікселі)
+    z-index: 1; // 1-й шар (найнижчий)
+  }
+
+  // Сама картинка квітів
+  .main-image {
+    position: relative;
+    width: 100%; // Квіти більші або менші за коло — налаштуйте за потребою
+    height: auto;
+    z-index: 2; // 2-й шар (над колом)
+  }
+}
+
+// === ШАР 3:Текст поверх усього
+.hero-text {
+  position: relative;
+  width: 80%;
+  z-index: 3; // 3-й шар (найвищий, перекриває обидві картинки)
+  
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 120px;
+    color: $accent-pink; // Використовуємо змінну, якщо вона є у вашому sass2
+  }
+}
+
+ 
+// -----------------------------------------
+
+// Панель фильтров
+.filter-bar {
+  display: flex;
+  background-color: rgba(200, 107, 133, 0.7);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto 40px auto;
+  backdrop-filter: blur(5px);
+// ===  ===
+  position: relative; // База для z-index
+  z-index: 100;       // Піднімаємо панель фільтрів і всі її меню вище за сітку карток
+  // ============================
+  // Отдельный элемент фильтра
+  .filter-item {
+    flex: 1;
+    display: flex;
+    justify-content: space-between; // Це можна перенести в .filter-title
+    align-items: center; // Це теж можна перенести в .filter-title
+    padding: 15px 25px;
+    color: #ffffff;
+    cursor: pointer;
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+    transition: background-color 0.3s;
+    
+    // Относительное позиционирование для родителя
+    position: relative; 
+
+    &:last-child {
+      border-right: none;
+    }
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    // === ТЕПЕР ВСІ ЕЛЕМЕНТИ МЕНЮ ВКЛАДЕНІ СЮДИ ===
+
+    .filter-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+
+      span {
+        font-size: 1rem;
+      }
+
+      .arrow-down {
+        border: solid #ffffff;
+        border-width: 0 1.5px 1.5px 0;
+        display: inline-block;
+        padding: 4px;
+        transform: rotate(45deg);
+        margin-bottom: 3px;
+      }
+    }
+
+    // Стили самого выпадающего меню
+    .dropdown-menu { 
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 250px;
+      background-color: #d1a3b4;
+      border-radius: 15px;
+      padding: 20px;
+    //   margin-top: 10px;
+background-clip: padding-box; // Чтобы фон не залезал на прозрачную рамку
+  border-top: 10px solid transparent; // Создает невидимый мостик для курсора
+  
+       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      z-index: 10;
+      cursor: default;
+      display: none; // Скрываем по умолчанию
+
+      .dropdown-close {
+        text-align: right;
+        font-size: 24px;
+        color: #ffffff;
+        cursor: pointer;
+        line-height: 1;
+        margin-bottom: 10px;
+      }
+
+      .checkbox-list {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-bottom: 25px;
+      }
+
+      .custom-checkbox {
+        display: flex;
+        align-items: center;
+        color: #a8546b;
+        font-size: 1rem;
+        cursor: pointer;
+        position: relative;
+        padding-left: 35px;
+
+        input {
+          position: absolute;
+          opacity: 0;
+          cursor: pointer;
+          height: 0;
+          width: 0;
+
+          &:checked ~ .checkmark {
+            background-color: transparent;
+          }
+
+          &:checked ~ .checkmark:after {
+            display: block;
+          }
+        }
+
+        .checkmark {
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 20px;
+          width: 20px;
+          background-color: transparent;
+          border: 2px solid #ffffff;
+          border-radius: 4px;
+
+          &:after {
+            content: "";
+            position: absolute;
+            display: none;
+            left: 6px;
+            top: 2px;
+            width: 5px;
+            height: 10px;
+            border: solid #a8546b;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+          }
+        }
+      }
+
+      .btn-apply {
+        width: 100%;
+        padding: 10px;
+        background-color: #a8546b;
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s;
+
+        &:hover {
+          background-color: darken(#a8546b, 10%);
+        }
+      }
+    }
+
+    // Показать меню при наведении (знаходиться всередині .filter-item)
+    &:hover .dropdown-menu {
+      display: block;
+    }
+  } // Кінець .filter-item
+} // Кінець .filter-bar
+
+
+
+// ---------------------------------
+// Каталог и карточки
+.catalog {
+  padding: 60px 0;
+  background-color: $bg-color-dark; 
+  background-image: url('../images/fon2.png'); 
+  background-position: right top; 
+  background-repeat: no-repeat;
+  background-size: 50%; 
+  padding: 60px 5%; 
+  min-height: 100vh;
+  color: #ffffff; 
+
+  h2 {
+    text-align: center;
+    color: $accent-pink;
+    font-family: $font-heading;
+  }
+
+  .filters {
+    @include flex-center(row, center, center);
+    gap: 15px;
+    margin-bottom: 40px;
+
+    .filter-btn {
+      background: rgba(200, 107, 133, 0.2);
+      border: 1px solid $accent-pink;
+      color: $text-color-light;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+
+      &:hover {
+        background: $accent-pink;
+      }
+    }
+  }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 80px;
+    margin-left: 195px;
+    margin-right: 195px;
+
+    // Затемняем все карточки, кроме активной
+    &:has(.product-card:hover) .product-card:not(:hover) {
+      filter: brightness(0.4);
+    }
+
+    // Ховаємо всі картки, починаючи з 7-ї
+    &:not(.show-all) .product-card:nth-child(n+7) {
+      display: none;
+    }
+  }
+
+  // === Карточка товара (ВСЕ ЕЛЕМЕНТИ МАЮТЬ БУТИ ТУТ) ===
+  .product-card {
+    background-color: #ffffff;
+    border-radius: 15px;
+    padding: 20px 20px 30px 20px;
+    text-align: center;
+    position: relative; 
+    color: #333333;
+    z-index: 1; 
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-radius 0.3s ease, filter 0.3s ease;
+
+    // Иконка сердечка
+    .favorite-icon {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 24px;
+      color: #c86b85; 
+      cursor: pointer;
+      z-index: 15; 
+      transition: transform 0.2s ease, color 0.2s ease;
+
+      &:hover {
+        color: #a84260; 
+        transform: scale(1.2); 
+      }
+    }
+
+    // Обгортка для картинки та бейджа
+    .product-image-wrap {
+      position: relative; 
+      margin-bottom: 25px;
+      display: flex;
+      justify-content: center; 
+      align-items: center; 
+      width: 100%; 
+
+      img {
+        width: 100%;
+        max-width: 220px; 
+        height: auto;
+        object-fit: contain; 
+        display: block; 
+      }
+
+      .badge {
+        position: absolute;
+        bottom: -15px; 
+        left: 50%;
+        transform: translateX(-50%); 
+        background-color: #b54966; 
+        color: #ffffff;
+        font-size: 0.75rem;
+        font-weight: bold;
+        padding: 6px 20px;
+        border-radius: 20px;
+        border: 2px solid #ffffff; 
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      }
+    }
+
+    .product-info {
+      .price-block {
+        display: flex;
+        justify-content: center;
+        align-items: baseline;
+        gap: 10px;
+        margin-bottom: 10px;
+
+        .current-price {
+          font-size: 1.5rem;
+          font-weight: 500;
+          color: #333333;
+        }
+
+        .old-price {
+          font-size: 0.9rem; 
+          color: #888888; 
+          text-decoration: line-through; 
+        }
+      }
+
+      .product-name {
+        font-size: 0.85rem;
+        color: #888888;
+        margin: 0;
+      }
+    }
+
+    // === ЩО ВІДБУВАЄТЬСЯ ПРИ НАВЕДЕННІ ===
+    &:hover {
+      z-index: 10;
+      transform: scale(1.05); 
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2); 
+      border-radius: 15px 15px 0 0; 
+
+      .hover-content {
+        opacity: 1; 
+        visibility: visible;
+        pointer-events: auto; 
+        transform: translateY(0); 
+      }
+    }
+
+    // === СТИЛІ ПРИХОВАНОГО БЛОКУ ===
+    .hover-content {
+      position: absolute; 
+      top: 100%; 
+      left: 0;
+      width: 100%; 
+      opacity: 0; 
+      visibility: hidden; 
+      pointer-events: none; 
+      transform: translateY(-10px); 
+      transition: all 0.3s ease; 
+      border-radius: 0 0 15px 15px; 
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2); 
+      overflow: hidden;
+
+      .composition {
+        background-color: #b57a8a;
+        color: #ffffff;
+        padding: 15px 20px;
+        font-size: 0.9rem;
+        text-align: left;
+        line-height: 1.4;
+      }
+
+      .card-actions {
+        display: flex;
+        justify-content: space-between;
+        padding: 15px 20px;
+        background-color: #ffffff;
+
+        .quantity {
+          display: flex;
+          border: 1px solid #e0e0e0;
+          border-radius: 5px;
+          overflow: hidden;
+
+          .qty-btn {
+            background: #ffffff;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            color: #888;
+            transition: background 0.2s;
+            &:hover { background: #f5f5f5; }
+          }
+
+          input {
+            width: 30px;
+            text-align: center;
+            border: none;
+            border-left: 1px solid #e0e0e0;
+            border-right: 1px solid #e0e0e0;
+            color: #333;
+          }
+        }
+
+        .btn-order {
+          background-color: #a84260;
+          color: #ffffff;
+          border: none;
+          border-radius: 5px;
+          padding: 8px 20px;
+          font-weight: bold;
+          cursor: pointer;
+          transition: background-color 0.3s;
+          &:hover {
+            background-color: darken(#a84260, 10%);
+          }
+        }
+      }
+    }
+  } // <--- ОСЬ ТУТ ДІЙСНО ЗАКРИВАЄТЬСЯ КАРТКА
+
+} // <--- А ОСЬ ТУТ ЗАКРИВАЄТЬСЯ .catalog
+
+
+// === СТИЛІ ДЛЯ КНОПКИ (Тепер вона дійсно поза межами секції) ===
+.btn-card {
+  display: block;
+  margin: 50px auto 0 auto; 
+  padding: 12px 40px;
+  background-color: transparent; 
+  color: #ffffff; 
+  border: 2px solid #b57a8a; 
+  border-radius: 30px; 
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #b57a8a; 
+    color: #ffffff;
+  }
+}
+
+// -----------------------секція 3-------------------------------------------------
+
+.features-section {
+  background-color: #000000; // Чорний фон секції
+  color: #ffffff;
+  padding: 80px 5%;
+
+  .features-title {
+    text-align: right;
+    color: #c86b85; // Рожевий колір заголовка
+    font-size: 2rem;
+    margin-bottom: 60px;
+    border-bottom: 1px solid #c86b85; // Тонка лінія під заголовком, якщо потрібно
+    display: inline-block;
+    // float: right;
+    padding-bottom: 10px;
+    
+    // Очищення float, щоб наступні елементи не "наїжджали"
+    &::after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+  }
+
+  // Контейнер для всіх рядків
+  .features-list {
+    clear: both;
+    display: flex;
+    flex-direction: column;
+  //  gap: 80px;  Відстань між рядами (Блок 1, Блок 2, Блок 3)
+  }
+
+  // Окремий рядок (Картинка + Текст)
+  .feature-item {
+    display: flex;
+    align-items: center; // Вирівнюємо текст по вертикалі відносно картинки
+    justify-content: space-between;
+    gap: 40px;
+
+    // МАГІЯ ШАХОВОГО ПОРЯДКУ: розвертаємо кожен парний (другий, четвертий...) елемент
+    &:nth-child(even) {
+      flex-direction: row-reverse;
+    }
+  }
+
+  // Блок з картинкою
+  .feature-image {
+    width: 50%; // Картинка займає трохи менше половини екрана
+
+    img {
+      width: 100%;
+      height: auto;
+      border-radius: 15px; // Заокруглені кути для фотографій
+      display: block;
+      object-fit: cover;
+    }
+  }
+
+  // Блок з текстом
+  .feature-text {
+    width: 45%; // Текст займає іншу половину екрана
+
+    h3 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    p {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #cccccc; // Світло-сірий текст для кращої читабельності на чорному
+    }
+  }
+}
+
+// ---------------------------------------
+// === СПІЛЬНА СЕКЦІЯ З ФОНОМ ===
+.contact-clients-section {
+  background-color: #000000;
+  
+  // Задаємо фонову картинку для всієї великої секції
+  background-image: url('../images/annie-spratt-nP1EL_8dLc4-unsplash 2.png'); // Вкажіть вашу картинку півонії
+  background-position: left center; // Розташовуємо зліва
+  background-size: 50%; // Регулюйте розмір квітки (50-60%)
+  background-repeat: no-repeat;
+  
+  padding: 80px 0 120px 0;
+  color: #ffffff;
+}
+
+ 
+// === БЛОК 1: ФОРМА ===
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+  background-color: rgba(145, 68, 93, 0.85);
+  backdrop-filter: blur(5px);
+  border-radius: 15px;
+  padding: 50px;
+  gap: 60px; // Відстань між формою та текстом
+
+  h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #ffffff;
+  }
+
+  .contact-card {
+ display: flex;
+ flex-direction: row;
+  }
+.form-wrapper {
+background-color: #999999;
+ 
+width: 44%;
+
+}
+
+
+
+
+  // === ЛІВА ЧАСТИНА (ФОРМА) ===
+
+
+  .contact-form-side {
+    width: 50%;
+    
+    .subtitle {
+      font-size: 1rem;
+      margin-bottom: 30px;
+      line-height: 1.4;
+      color: #ffffff;
+    }
+
+    .request-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+
+      .input-group {
+        display: flex;
+        background-color: #ffffff;
+        border-radius: 8px;
+        overflow: hidden;
+
+        input {
+          flex: 1;
+          border: none;
+          padding: 15px 20px;
+          font-size: 1rem;
+          color: #333333;
+          outline: none;
+
+          &::placeholder {
+            color: #999999;
+          }
+        }
+
+        .input-icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0 15px;
+          border-left: 1px solid #e0e0e0;
+          background-color: #ffffff;
+          
+          img {
+            width: 18px;
+            opacity: 0.6;
+          }
+        }
+      }
+
+      .btn-submit {
+        width: 100%;
+        padding: 15px;
+        background-color: #a84260;
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin-top: 10px;
+
+        &:hover {
+          background-color: darken(#a84260, 10%);
+        }
+      }
+    }
+  }
+
+  // === ПРАВА ЧАСТИНА (ІНФОРМАЦІЯ) ===
+  .contact-info-side {
+    width: 50%;
+
+  .manager-benefits {
+  list-style: none; 
+  padding: 0; 
+  margin: 30px 0 0 0;
+
+  li {
+    // === САМЕ ЦЕЙ РЯДОК СТАВИТЬ ЇХ ПОРУЧ ===
+    display: flex; 
+    
+    align-items: flex-start; // Вирівнює по верхньому краю
+    gap: 20px; // Робить відступ між галочкою та текстом
+    margin-bottom: 25px;
+
+    .check-icon {
+      width: 24px; 
+      height: auto;
+      flex-shrink: 0; // Не дає галочці стискатися
+      margin-top: 3px; 
+    }
+
+    p {
+      margin: 0;
+      color: #ffffff;
+      font-size: 0.95rem;
+      line-height: 1.5;
+
+      strong {
+        font-weight: 600;
+      }
+    }
+  }
+
+}
+  }
+}
+// === БЛОК 2: КЛІЄНТИ ===
+.clients-container {
+  margin-top: 100px; // Відступ від форми до блоку клієнтів
+}
+
+// Налаштування для заголовків секції
+.section-title {
+  color: #c86b85;
+  font-size: 2rem;
+  font-weight: normal;
+  border-bottom: 1px solid #c86b85;
+  display: inline-block;
+  padding-bottom: 10px;
+
+  &.left-align {
+    text-align: left;
+  }
+
+  &.right-align {
+    text-align: right;
+    float: right; // Зсуваємо заголовок "Наші клієнти" вправо
+  }
+}
+
+.contact-card {
+  display: flex;
+  margin-top: 30px;
+  background-color: rgba(185, 100, 128, 0.68);
+  backdrop-filter: blur(5px);
+  border-radius: 15px;
+  padding: 50px;
+  gap: 60px;
+
+ 
+
+  h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #ffffff;
+  }
+
+  // === ЛІВА ЧАСТИНА (ФОРМА) ===
+  .form-wrapper { // Оновлений клас
+    width: 50%;
+    
+    .subtitle {
+      font-size: 1rem;
+      margin-bottom: 30px;
+      line-height: 1.4;
+      color: #ffffff;
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+
+      input {
+        border: none;
+        border-radius: 8px;
+        padding: 15px 20px;
+        font-size: 1rem;
+        color: #333333;
+        outline: none;
+      }
+
+      .btn-submit {
+        padding: 15px;
+        background-color: #a84260;
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin-top: 10px;
+    
+
+        &:hover {
+          background-color: darken(#a84260, 10%);
+        }
+      }
+    }
+  }
+
+  // === ПРАВА ЧАСТИНА (ІНФОРМАЦІЯ З ГАЛОЧКАМИ) ===
+  .contact-info-side {
+    width: 50%;
+
+    .manager-benefits {
+      list-style: none; 
+      padding: 0; 
+      margin: 30px 0 0 0;
+
+      li {
+        display: flex;
+        align-items: flex-start; // Вирівнює галочку по верху тексту
+        gap: 20px; // Відступ між галочкою та текстом
+        margin-bottom: 25px;
+       align-items: center; // Вирівнює галочку строго по центру всього блоку тексту
+       
+       .check-icon {
+          width: 24px; 
+          height: auto;
+          flex-shrink: 0; // Не дає галочці деформуватися
+          margin-top: 3px; 
+        
+
+        p {
+          margin: 0;
+          color: #ffffff;
+          font-size: 0.95rem;
+          line-height: 1.5;
+
+          strong {
+            font-weight: 600;
+          }
+        }
+      }}
+    }
+  }
+}
+
+
+
+
+// Проста сітка для фото клієнтів
+.clients-slider {
+  clear: both; // Очищаємо float від правого заголовка
+  display: flex;
+  gap: 15px;
+  margin-top: 80px;
+
+  img {
+    width: 25%; // 4 картинки по 25% ширини
+    height: auto;
+    object-fit: cover;
+  }
+
+
+
+
+}
+// Горизонтальна прокрутка для фото клієнтів
+// .clients-slider {
+//   clear: both; 
+//   display: flex;
+//   gap: 20px; // Відстань між фотографіями
+//   margin-top: 80px;
+  
+  // === МАГІЯ ПРОКРУТКИ ===
+//   overflow-x: auto; // Вмикаємо горизонтальну прокрутку
+//   scroll-behavior: smooth; // Плавне прокручування
+//   scroll-snap-type: x mandatory; // Додаємо ефект "прилипання" карток
+//   padding-bottom: 20px; // Відступ знизу, щоб смуга прокрутки не налізала на фото
+
+  // Кастомізація смуги прокрутки (щоб вона була красивою, а не стандартною сірою)
+//   &::-webkit-scrollbar {
+//     height: 8px; // Товщина смуги
+//   }
+//   &::-webkit-scrollbar-track {
+//     background: rgba(255, 255, 255, 0.1); // Напівпрозорий трек
+//     border-radius: 10px;
+//   }
+//   &::-webkit-scrollbar-thumb {
+//     background: #c86b85; // Рожевий колір повзунка (під ваш макет)
+//     border-radius: 10px;
+//   }
+
+//   img {
+    // ЗАБОРОНЯЄМО СТИСКАННЯ: flex-grow: 0, flex-shrink: 0, базова ширина: 280px
+//     flex: 0 0 280px; 
+//     height: 350px; // Фіксована висота (відрегулюйте під свої фотографії)
+//     object-fit: cover; // Щоб фото не деформувалися
+//     border-radius: 10px; // Легке заокруглення кутів для краси
+//     scroll-snap-align: start; // При прокрутці фото буде зупинятися рівно по лівому краю
+//   }
+// }
+
+
+// === БЛОК 2: КЛІЄНТИ ===
+.clients-container {
+  margin-top: 100px; 
+}
+
+// Нова обгортка для слайдера
+.slider-wrapper {
+  position: relative;
+  clear: both;
+  margin-top: 80px;
+  display: flex;
+  align-items: center; // Центруємо стрілки по вертикалі
+
+  // Стилі для стрілочок
+  .slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    font-size: 3rem; // Розмір стрілки
+    color: #c86b85; // Рожевий колір з макета
+    cursor: pointer;
+    z-index: 10;
+    transition: color 0.3s, transform 0.2s;
+
+    &:hover {
+      color: darken(#c86b85, 10%);
+      transform: translateY(-50%) scale(1.1); // Легке збільшення при наведенні
+    }
+
+    // Позиціонування лівої стрілки
+    &.prev-arrow {
+      left: -40px; // Виносимо за межі картинок
+    }
+
+    // Позиціонування правої стрілки
+    &.next-arrow {
+      right: -40px;
+    }
+  }
+}
+
+// Сам слайдер
+.clients-slider {
+  display: flex;
+  gap: 20px; 
+  width: 100%;
+  overflow-x: auto; 
+  scroll-behavior: smooth; 
+  scroll-snap-type: x mandatory; 
+  padding-bottom: 20px;
+
+  // Приховуємо стандартну смугу прокрутки (щоб було красиво, як на макеті)
+  scrollbar-width: none; // Для Firefox
+  -ms-overflow-style: none; // Для IE та Edge
+  &::-webkit-scrollbar {
+    display: none; // Для Chrome, Safari
+  }
+
+  img {
+    flex: 0 0 280px; 
+    height: 350px; 
+    object-fit: cover; 
+    border-radius: 10px; 
+    scroll-snap-align: start; 
+  }
+}
+
+// ------------------------------------------------------------------------
+// Форма
+.contact-form-section {
+  background-color: rgba(239, 178, 195, 0.492);
+  padding: 60px 0;
+
+  .form-wrapper {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+
+    .contact-form {
+      @include flex-center(column, center, stretch);
+      gap: 15px;
+      margin-top: 30px;
+ }}}
+.container-form{
+width: 100%;
+
+
+}
+.input-group {
+  display: flex;
+  background-color: #ffffff;
+  border-radius: 10px; // Скругление краев всего поля
+  overflow: hidden;
+
+  input {
+    flex: 1; // Растягивает поле ввода на все свободное пространство
+    border: none;
+    padding: 15px 20px;
+    font-size: 1rem;
+    color: #333333;
+    outline: none;
+    font-weight: bold;
+
+    &::placeholder {
+      color: #999999;
+    }
+  }
+
+  .input-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    border-left: 1px solid #cccccc; // Вертикальная разделительная линия
+    background-color: #ffffff;
+
+    img {
+      width: 18px;
+      height: auto;
+      opacity: 0.6; // Делает иконку приглушенно-серой
+    }
+  }
+}
+.footer {
+  background-color: #000000;
+  color: #ffffff;
+  padding: 60px 0 80px 0; // Відступи зверху та знизу
+
+  .footer-content {
+    display: flex;
+    justify-content: space-between; // Розштовхує колонки по краях і по центру
+    align-items: flex-start;
+  }
+
+  // === ЛІВА КОЛОНКА (НАВІГАЦІЯ) ===
+  .footer-nav {
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        margin-bottom: 25px; // Відступ між пунктами меню
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        a {
+          color: #ffffff;
+          text-decoration: none;
+          font-size: 1rem;
+          transition: color 0.3s ease;
+
+          &:hover {
+            color: #c86b85; // Рожевий колір при наведенні
+          }
+        }
+      }
+    }
+  }
+
+  // === ЦЕНТРАЛЬНА КОЛОНКА (БРЕНД) ===
+  .footer-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .footer-logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 40px;
+
+      img {
+        width: 70px; // Розмір квітки
+        height: auto;
+        margin-bottom: 15px;
+      }
+
+      .logo-text {
+        font-size: 1.2rem;
+        letter-spacing: 1.5px;
+      }
+    }
+
+    .social-links {
+      display: flex;
+      gap: 30px; // Відстань між іконками
+
+      a {
+        display: inline-block;
+        transition: transform 0.3s ease;
+
+        &:hover {
+          transform: translateY(-3px); // Ефект підстрибування при наведенні
+        }
+
+        .img {
+          width: 64px;
+          height: auto;
+        }
+      }
+    }
+  }
+
+  // === ПРАВА КОЛОНКА (КОНТАКТИ) ===
+  .footer-contacts {
+    text-align: center; // Вирівнювання тексту по центру своєї колонки
+
+    .contact-item {
+      margin-bottom: 30px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .contact-value {
+        font-size: 1.1rem;
+        margin: 0 0 8px 0;
+        color: #ffffff;
+        line-height: 1.4;
+      }
+
+      .contact-label {
+        font-size: 0.9rem;
+        margin: 0;
+        color: #aaaaaa; // Світло-сірий колір для підпису, як на макеті
+      }
+    }
+  }
+}
